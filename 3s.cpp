@@ -3,34 +3,33 @@
 #include <vector>
 #include <climits>
 #include <chrono>
-#include <locale>
 using namespace std;
 using namespace std::chrono;
 
-// Структура для хранения координат и расстояния
+// Structure to store coordinates and distance
 struct Cell {
     int x, y, dist;
 };
 
-// Проверка, находится ли клетка в пределах доски
+// Check if the cell is within the board
 bool isValid(int x, int y) {
     return (x >= 0 && x < 8 && y >= 0 && y < 8);
 }
 
-// Возможные ходы коня
+// Possible knight moves
 int dx[] = {2, 2, -2, -2, 1, 1, -1, -1};
 int dy[] = {1, -1, 1, -1, 2, -2, 2, -2};
 
-// Реализация через массив
+// Implementation using array
 int knightMovesArray(char start[], char end[]) {
     int startX = start[0] - 'A';
     int startY = start[1] - '1';
     int endX = end[0] - 'A';
     int endY = end[1] - '1';
 
-    // Массив для хранения посещенных клеток
+    // Array to keep track of visited cells
     bool visited[8][8] = {false};
-    // Очередь реализована через массив
+    // Queue implemented via array
     Cell queue[64];
     int front = 0, rear = 0;
 
@@ -58,7 +57,7 @@ int knightMovesArray(char start[], char end[]) {
     return -1;
 }
 
-// Реализация через связанный список
+// Implementation using linked list
 struct Node {
     Cell data;
     Node* next;
@@ -130,7 +129,7 @@ int knightMovesLinkedList(char start[], char end[]) {
     return -1;
 }
 
-// Реализация через STL (очередь)
+// Implementation using STL queue
 int knightMovesSTL(char start[], char end[]) {
     int startX = start[0] - 'A';
     int startY = start[1] - '1';
@@ -166,43 +165,42 @@ int knightMovesSTL(char start[], char end[]) {
 }
 
 int main() {
-    setlocale(LC_ALL, "Russian");
     char start[] = "A1";
     char end[] = "H8";
 
-    // Тестирование и замер времени для массива
+    // Timing for array implementation
     auto startTime = high_resolution_clock::now();
     int resultArray = knightMovesArray(start, end);
     auto stopTime = high_resolution_clock::now();
     auto durationArray = duration_cast<microseconds>(stopTime - startTime);
 
-    // Тестирование и замер времени для связанного списка
+    // Timing for linked list implementation
     startTime = high_resolution_clock::now();
     int resultLinkedList = knightMovesLinkedList(start, end);
     stopTime = high_resolution_clock::now();
     auto durationLinkedList = duration_cast<microseconds>(stopTime - startTime);
 
-    // Тестирование и замер времени для STL
+    // Timing for STL implementation
     startTime = high_resolution_clock::now();
     int resultSTL = knightMovesSTL(start, end);
     stopTime = high_resolution_clock::now();
     auto durationSTL = duration_cast<microseconds>(stopTime - startTime);
 
-    // Вывод результатов
-    cout << "Минимальное число ходов (массив): " << resultArray << endl;
-    cout << "Время выполнения (массив): " << durationArray.count() << " мкс" << endl;
+    // Output results
+    cout << "Minimum number of moves (array): " << resultArray << endl;
+    cout << "Execution time (array): " << durationArray.count() << " microseconds" << endl;
 
-    cout << "Минимальное число ходов (связанный список): " << resultLinkedList << endl;
-    cout << "Время выполнения (связанный список): " << durationLinkedList.count() << " мкс" << endl;
+    cout << "Minimum number of moves (linked list): " << resultLinkedList << endl;
+    cout << "Execution time (linked list): " << durationLinkedList.count() << " microseconds" << endl;
 
-    cout << "Минимальное число ходов (STL): " << resultSTL << endl;
-    cout << "Время выполнения (STL): " << durationSTL.count() << " мкс" << endl;
+    cout << "Minimum number of moves (STL): " << resultSTL << endl;
+    cout << "Execution time (STL): " << durationSTL.count() << " microseconds" << endl;
 
-    // Сравнение производительности
-    cout << "\nСравнение производительности:" << endl;
-    cout << "1. STL очередь: " << durationSTL.count() << " мкс" << endl;
-    cout << "2. Массив: " << durationArray.count() << " мкс" << endl;
-    cout << "3. Связанный список: " << durationLinkedList.count() << " мкс" << endl;
+    // Performance comparison
+    cout << "\nPerformance comparison:" << endl;
+    cout << "1. STL queue: " << durationSTL.count() << " microseconds" << endl;
+    cout << "2. Array: " << durationArray.count() << " microseconds" << endl;
+    cout << "3. Linked list: " << durationLinkedList.count() << " microseconds" << endl;
 
     return 0;
 }
